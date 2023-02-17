@@ -6,11 +6,14 @@ import fetcher from "@/lib/fetcher";
 import Image from "next/image";
 
 const Hero = () => {
-  const { data: thumbnails } = useSWR("/api/thumbnail", fetcher);
+  const { data: thumbnails, isLoading } = useSWR("/api/thumbnail", fetcher);
 
   console.log({ thumbnails });
 
-  if (thumbnails?.length == 0) return <></>;
+  if (isLoading)
+    return (
+      <div className="lg:h-[50vh] md:h-[40vh] h-[36vh] w-full bg-gray-200 animate-pulse"></div>
+    );
 
   return (
     <section>

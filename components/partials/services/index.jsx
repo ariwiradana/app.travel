@@ -6,7 +6,7 @@ import React from "react";
 import useSWR from "swr";
 
 const ServicesComponent = () => {
-  const { data: transport } = useSWR("/api/transport", fetcher);
+  const { data: transport, isLoading } = useSWR("/api/transport", fetcher);
   return (
     <Container className="mt-32">
       <TitleSection
@@ -14,7 +14,7 @@ const ServicesComponent = () => {
         subtitle="All Tour Packages"
         className="mb-8"
       />
-      <CardGrid data={transport} type="services" />
+      <CardGrid isLoading={isLoading} data={transport} type="services" />
     </Container>
   );
 };
