@@ -18,7 +18,7 @@ const Card = ({ slug, id, price, minimum_pax, title, image_url, type }) => {
       <h4 className="text-black font-bold font-montserrat text-base md:text-lg lg:text-xl mt-3 mb-2 line-clamp-2">
         {title}
       </h4>
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center flex-wrap gap-2">
         {type == "tours" ? (
           <>
             <p className="border border-app-black-500 text-app-black-500 md:text-sm py-1 px-4 rounded-full font-montserrat font-semibold text-xs">
