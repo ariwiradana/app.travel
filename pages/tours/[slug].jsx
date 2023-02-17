@@ -1,12 +1,16 @@
 import Layout from "@/components/molecules/layout";
-import ToursComponent from "@/components/partials/tours";
+import DetailTour from "@/components/partials/tours/detail";
+import fetcher from "@/lib/fetcher";
 import React from "react";
+import useSWR from "swr";
 
 const ToursSlug = ({ slug }) => {
-  console.log({ slug });
+  const { data, isLoading } = useSWR(`/api/destination/${slug}`, fetcher);
+  const { data: other } = useSWR(`/api/destination`, fetcher);
+
   return (
     <Layout>
-      <ToursComponent />
+      <DetailTour data={data} other={other} slug={slug} />
     </Layout>
   );
 };

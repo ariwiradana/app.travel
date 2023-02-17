@@ -7,11 +7,11 @@ import fetcher from "@/lib/fetcher";
 
 const HomeComponent = () => {
   const { data: tours, isLoading: isLoadingTours } = useSWR(
-    "/api/destination/3",
+    "/api/destination?limit=3",
     fetcher
   );
   const { data: services, isLoading: isLoadingServices } = useSWR(
-    "/api/transport/3",
+    "/api/transport?limit=3",
     fetcher
   );
 

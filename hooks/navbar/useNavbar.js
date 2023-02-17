@@ -5,8 +5,10 @@ const useNavbar = () => {
   const { pathname } = useRouter();
   const [isTop, setIsTop] = useState(true);
 
+  console.log({ pathname });
+
   useEffect(() => {
-    if (pathname == "/") {
+    if (pathname == "/" || pathname == "/tours/[slug]") {
       window.addEventListener("scroll", handleScroll, { passive: true });
 
       return () => {
