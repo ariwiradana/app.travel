@@ -1,24 +1,24 @@
 import TitleSection from "@/components/elements/title-section";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Card from "../../elements/card";
 import Container from "../container";
 
-const CardSlider = ({ data, title, subtitle }) => {
+const CardSlider = ({ data, title, subtitle, href, actionTitle, type }) => {
   if (data?.length == 0) return <></>;
 
   return (
-    <Container className="py-20">
-      <TitleSection title={title} subtitle={subtitle} />
+    <Container>
+      <TitleSection
+        title={title}
+        subtitle={subtitle}
+        href={href}
+        actionTitle={actionTitle}
+      />
       <Swiper
-        className="rounded-2xl overflow-hidden"
-        spaceBetween={30}
+        spaceBetween={20}
+        slidesPerView="auto"
         breakpoints={{
-          640: {
-            slidesPerView: 1,
-            spaceBetween: 20,
-          },
           768: {
             slidesPerView: 2,
             spaceBetween: 40,
@@ -29,27 +29,20 @@ const CardSlider = ({ data, title, subtitle }) => {
           },
         }}
       >
-        {data?.map(({ id, title, category, image, path }) => (
+        {data?.map((destination) => (
           <SwiperSlide
-            key={`${title.toLowerCase()}.${id}.${category}`}
-            className="group"
+            key={destination?._id}
+            className="group max-w-[80%] md:max-w-full"
           >
-            <Link href={path}>
-              <div className="w-full h-[14rem] md:h-[16rem] lg:h-[20rem] rounded-2xl overflow-hidden relative">
-                <Image
-                  className="transform group-hover:scale-105 transition-transform ease-in-out duration-500"
-                  alt={`${title.toLowerCase()}.${id}.${category}`}
-                  fill
-                  src={image}
-                />
-              </div>
-              <h4 className="text-black font-bold font-montserrat text-xl lg:text-2xl mt-3">
-                {title}
-              </h4>
-              <p className="text-sm font-raleway font-medium text-gray-400">
-                {category}
-              </p>
-            </Link>
+            <Card
+              type={type}
+              title={destination?.title}
+              id={destination?._id}
+              image_url={destination?.image_url}
+              slug={destination?.slug}
+              minimum_pax={destination?.minimum_pax}
+              price={destination?.price}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

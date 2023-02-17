@@ -1,6 +1,6 @@
 import React from "react";
 
-const ButtonFillWhite = ({ bg, hoverBg, title, color, ...props }) => {
+const ButtonFillWhite = ({ title, ...props }) => {
   return (
     <button
       {...props}
