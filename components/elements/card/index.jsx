@@ -9,7 +9,7 @@ const Card = ({ slug, id, price, minimum_pax, title, image_url, type }) => {
       <div className="w-full h-[14rem] md:h-[16rem] group lg:h-[20rem] rounded-2xl overflow-hidden relative">
         <Image
           priority
-          className="transform group-hover:scale-105 transition-transform ease-in-out duration-500 object-cover object-bottom"
+          className="transform group-hover:scale-105 transition-transform ease-in-out duration-500 object-cover object-bottom rounded-2xl overflow-hidden"
           alt={`${slug}-${id}`}
           fill
           src={image_url}
