@@ -6,7 +6,19 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        montserrat: "Montserrat, sans-serif",
+        raleway: "Raleway, sans-serif",
+      },
+      colors: {
+        app: {
+          black: {
+            500: "#4B4B4B",
+          },
+        },
+      },
+    },
   },
   plugins: [],
 };
