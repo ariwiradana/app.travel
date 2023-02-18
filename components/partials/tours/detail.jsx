@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { FiCheck } from "react-icons/fi";
 
 const DetailTour = ({ data, other, slug }) => {
   return (
@@ -19,7 +20,7 @@ const DetailTour = ({ data, other, slug }) => {
           className="object-cover"
         />
       </div>
-      <Container className="relative z-[2]">
+      <Container className="relative z-[2] ">
         <div className="grid lg:grid-cols-2">
           <div className="md:-mt-[8rem] bg-white py-6 md:p-10 rounded-2xl">
             <h5 className="text-xs font-medium text-gray-500 uppercase mb-3">
@@ -33,12 +34,12 @@ const DetailTour = ({ data, other, slug }) => {
               eligendi inventore quibusdam similique eum porro. Hic, aut
               praesentium? Nostrum, ipsum!
             </p>
-            <div className="flex flex-wrap gap-x-12 gap-y-4 lg:gap-y-6">
-              <Offer title="Destination" data={data?.destination} />
-              <Offer title="Inclution" data={data?.inclution} />
+            <div className="flex flex-col flex-wrap gap-x-12 gap-y-6 lg:gap-y-8 divide-y divide-gray-200">
+              <Offer title="Where to go?" data={data?.destination} />
+              <Offer title="What's included?" data={data?.inclution} />
               <Offer title="Pax" data={[`Minimum ${data?.minimum_pax} pax`]} />
             </div>
-            <div className="flex md:flex-row gap-y-4 flex-col items-start justify-between mt-12 border-t border-t-gray-300 pt-6">
+            <div className="flex md:flex-row gap-y-4 flex-col items-start justify-between mt-8 border-t border-t-gray-200 pt-6">
               <div className="flex gap-x-2 items-end">
                 <h2 className="text-4xl font-bold font-raleway">
                   {priceFormatterUSD(data?.price)}
@@ -67,13 +68,14 @@ export default DetailTour;
 
 const Offer = ({ title, data }) => {
   return (
-    <div>
-      <h4 className="uppercase font-montserrat font-bold text-lg mb-3 lg:mb-4">
+    <div className="pt-8">
+      <h4 className="font-raleway font-semibold text-2xl mb-3 lg:mb-4">
         {title}
       </h4>
-      <ul className="list-disc list-inside">
+      <ul>
         {data?.map((label) => (
-          <li className="text-base font-raleway font-medium text-app-black-500 leading-7">
+          <li className="text-base font-raleway font-medium text-app-black-500 leading-9 flex items-center gap-x-4">
+            <FiCheck />
             {label}
           </li>
         ))}
