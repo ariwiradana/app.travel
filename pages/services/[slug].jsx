@@ -1,16 +1,16 @@
 import Layout from "@/components/molecules/layout";
-import DetailTour from "@/components/partials/tours/detail";
+import DetailSerices from "@/components/partials/services/detail";
 import React from "react";
 
-const ToursSlug = ({ slug }) => {
+const ServicesSlug = ({ slug }) => {
   return (
     <Layout>
-      <DetailTour slug={slug} />
+      <DetailSerices slug={slug} />
     </Layout>
   );
 };
 
-export default ToursSlug;
+export default ServicesSlug;
 
 export const getServerSideProps = async ({ params }) => {
   const slug = params.slug;

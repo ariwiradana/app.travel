@@ -8,20 +8,16 @@ const useNavbar = () => {
   console.log({ pathname });
 
   useEffect(() => {
-    if (pathname == "/" || pathname == "/tours/[slug]") {
-      window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    } else {
-      setIsTop(false);
-    }
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [pathname]);
 
   const handleScroll = () => {
     const position = window.pageYOffset;
-    if (position > 100) {
+    if (position > 300) {
       setIsTop(false);
     } else {
       setIsTop(true);

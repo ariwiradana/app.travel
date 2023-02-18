@@ -1,6 +1,6 @@
 import ButtonFillDark from "@/components/elements/button/button-fill-dark";
 import Container from "@/components/molecules/container";
-import { priceFormatterUSD } from "@/lib/formatter";
+import { priceFormatterIDR, priceFormatterUSD } from "@/lib/formatter";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -10,9 +10,11 @@ import { FiCheck } from "react-icons/fi";
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 
-const DetailTour = ({ slug }) => {
-  const { data, isLoading } = useSWR(`/api/destination/${slug}`, fetcher);
-  const { data: other } = useSWR(`/api/destination`, fetcher);
+const DetailSerices = ({ slug }) => {
+  const { data, isLoading } = useSWR(`/api/transport/${slug}`, fetcher);
+  const { data: other } = useSWR(`/api/transport`, fetcher);
+
+  console.log({ data });
 
   return (
     <>
@@ -35,28 +37,27 @@ const DetailTour = ({ slug }) => {
         <div>
           <div className="md:-mt-[8rem] bg-white py-6 md:p-10 rounded-2xl lg:max-w-[70%]">
             <h5 className="text-xs font-medium text-gray-500 uppercase mb-3">
-              Tour Package
+              Transport Services
             </h5>
             <h3 className="lg:text-4xl text-3xl font-raleway font-bold text-black mb-6 max-w-[90%]">
               {data?.title}
             </h3>
-            <p className="text-sm font-raleway font-medium text-app-black-500 mb-12 leading-7">
+            <p className="text-sm font-raleway font-medium text-app-black-500 mb-6 leading-7">
               {data?.description}
             </p>
             <div className="flex flex-col flex-wrap gap-x-12 gap-y-6 lg:gap-y-8 divide-y divide-gray-200">
-              <Offer title="Where to go?" data={data?.destination} />
-              <Offer title="What's included?" data={data?.inclution} />
-              <Offer title="Pax" data={[`Minimum ${data?.minimum_pax} pax`]} />
+              {data?.destination?.length != 0 && (
+                <Offer title="Where to go?" data={data?.destination} />
+              )}
             </div>
             <div className="flex md:flex-row gap-y-4 flex-col items-start justify-between mt-8 border-t border-t-gray-200 pt-6">
-              <div className="flex gap-x-2 items-end">
-                <h2 className="lg:text-4xl text-3xl font-bold font-raleway">
-                  {priceFormatterUSD(data?.price)}
-                </h2>
-                <p className="text-sm font-montserrat text-app-black-500">
-                  / pax{" "}
-                </p>
-              </div>
+              {data?.price?.from == data?.price?.to && (
+                <div className="flex gap-x-2 items-end">
+                  <h2 className="lg:text-4xl text-2xl font-bold font-raleway">
+                    {priceFormatterIDR(data?.price?.from)}
+                  </h2>
+                </div>
+              )}
               <Link
                 target="_blank"
                 href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}`}
@@ -73,7 +74,7 @@ const DetailTour = ({ slug }) => {
   );
 };
 
-export default DetailTour;
+export default DetailSerices;
 
 const Offer = ({ title, data }) => {
   return (
@@ -81,11 +82,16 @@ const Offer = ({ title, data }) => {
       <h4 className="font-raleway font-semibold text-2xl mb-3 lg:mb-4">
         {title}
       </h4>
-      <ul>
-        {data?.map((label) => (
-          <li className="text-base font-raleway font-medium text-app-black-500 leading-9 flex items-center gap-x-4">
-            <FiCheck />
-            {label}
+      <ul className="flex flex-col gap-y-4">
+        {data?.map(({ title, price }) => (
+          <li className="text-base font-raleway font-medium text-app-black-500 leading-6 flex gap-x-6">
+            <FiCheck className="lg:mt-[10px] mt-1" />
+            <div>
+              {title}
+              <h5 className="font-montserrat font-semibold text-black leading-6">
+                {priceFormatterIDR(price)}
+              </h5>
+            </div>
           </li>
         ))}
       </ul>
@@ -98,7 +104,7 @@ const OtherTours = ({ data, slug }) => {
   return (
     <div className="lg:p-10 mt-4 pt-8 lg:pt-0 lg:mt-20 border-t border-t-gray-200 lg:border-t-transparent lg:max-w-[80%]">
       <h4 className="font-montserrat font-bold text-xl mb-4">
-        Similliar Destination To Go
+        Other Transport Services
       </h4>
       <Swiper
         autoplay={{
@@ -112,7 +118,7 @@ const OtherTours = ({ data, slug }) => {
       >
         {newData?.map((destination) => (
           <SwiperSlide className="group max-w-[80%] lg:max-w-[45%] group transition-all ease-in-out duration-500">
-            <Link href={`/tours/${destination?.slug}`}>
+            <Link href={`/services/${destination?.slug}`}>
               <div className="md:h-[16rem] h-[12rem] lg:h-[20rem] w-full relative rounded-xl bg-cover overflow-hidden">
                 <Image
                   src={destination?.image_url}
@@ -122,7 +128,7 @@ const OtherTours = ({ data, slug }) => {
                 />
                 <div className="absolute w-full top-0 left-0 h-full bg-gradient-to-b from-transparent p-5 md:p-6 to-gray-900 z-[2] flex flex-col justify-end">
                   <h4 className="text-white font-monserrat mb-2 text-[10px] lg:text-xs transform transition-all uppercase ease-in-out duration-500 lg:opacity-0 group-hover:opacity-100 group-hover:translate-y-0 lg:translate-y-6">
-                    Tours
+                    Services
                   </h4>
                   <h4 className="text-white font-semibold font-raleway text-lg lg:text-xl transform transition-all line-clamp-2 ease-in-out duration-500 delay-100 lg:opacity-0 group-hover:opacity-100 leading-6 group-hover:translate-y-0 lg:translate-y-6">
                     {destination?.title}

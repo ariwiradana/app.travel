@@ -8,7 +8,7 @@ import useSWR from "swr";
 const ServicesComponent = () => {
   const { data: transport, isLoading } = useSWR("/api/transport", fetcher);
   return (
-    <Container className="mt-32">
+    <Container className="mt-8 lg:mt-12">
       <TitleSection
         title="All Tour Packages"
         subtitle="All Tour Packages"
