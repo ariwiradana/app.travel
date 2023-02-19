@@ -4,7 +4,7 @@ import React from "react";
 
 const Home = () => {
   return (
-    <Layout>
+    <Layout title="Karen's Tour">
       <HomeComponent />
     </Layout>
   );

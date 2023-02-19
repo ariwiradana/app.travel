@@ -5,7 +5,12 @@ const useNavbar = () => {
   const { pathname } = useRouter();
   const [isTop, setIsTop] = useState(true);
 
-  console.log({ pathname });
+  const [menu] = useState([
+    { label: "Home", path: "/" },
+    { label: "Tours", path: "/tours" },
+    { label: "Services", path: "/services" },
+    { label: "About Us", path: "/about-us" },
+  ]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -24,7 +29,7 @@ const useNavbar = () => {
     }
   };
 
-  return { isTop };
+  return { isTop, menu };
 };
 
 export default useNavbar;

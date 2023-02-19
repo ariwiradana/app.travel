@@ -10,8 +10,8 @@ const ServicesComponent = () => {
   return (
     <Container className="mt-8 lg:mt-12">
       <TitleSection
-        title="All Tour Packages"
-        subtitle="All Tour Packages"
+        title="All Transport Services"
+        subtitle="Airport Pickup / Drop Off / Tour"
         className="mb-8"
       />
       <CardGrid isLoading={isLoading} data={transport} type="services" />

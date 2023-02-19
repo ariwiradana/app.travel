@@ -4,7 +4,7 @@ import React from "react";
 
 const Tours = () => {
   return (
-    <Layout>
+    <Layout title="All Tour Packages">
       <ToursComponent />
     </Layout>
   );

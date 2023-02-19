@@ -9,15 +9,18 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FiCheck } from "react-icons/fi";
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
+import Head from "next/head";
 
 const DetailSerices = ({ slug }) => {
   const { data, isLoading } = useSWR(`/api/transport/${slug}`, fetcher);
   const { data: other } = useSWR(`/api/transport`, fetcher);
-
-  console.log({ data });
+  const { data: contact } = useSWR("/api/contact", fetcher);
 
   return (
     <>
+      <Head>
+        <title>{data?.title}</title>
+      </Head>
       <div className="w-full h-[16rem] md:h-[28rem] relative">
         {isLoading ? (
           <div className="w-full h-full bg-gray-200 animate-pulse"></div>
@@ -58,13 +61,15 @@ const DetailSerices = ({ slug }) => {
                   </h2>
                 </div>
               )}
-              <Link
-                target="_blank"
-                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}`}
-                className="w-full md:w-auto"
-              >
-                <ButtonFillDark size="lg" title="Book Now" full />
-              </Link>
+              {contact && (
+                <Link
+                  target="_blank"
+                  href={`https://wa.me/${contact?.phone}`}
+                  className="w-full md:w-auto"
+                >
+                  <ButtonFillDark size="lg" title="Book Now" full />
+                </Link>
+              )}
             </div>
           </div>
           <OtherTours data={other} slug={slug} />

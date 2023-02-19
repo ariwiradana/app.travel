@@ -33,7 +33,7 @@ const HomeComponent = () => {
           href="/services"
           isLoading={isLoadingServices}
           data={services}
-          title="Transport Service Activities"
+          title="Transport Services"
           subtitle="Airport Pickup / Drop Off / Tour"
           type="services"
         />

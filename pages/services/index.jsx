@@ -4,7 +4,7 @@ import React from "react";
 
 const Services = () => {
   return (
-    <Layout>
+    <Layout title="All Transport Services">
       <ServicesComponent />
     </Layout>
   );

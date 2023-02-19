@@ -1,24 +1,19 @@
 import ButtonFillDark from "@/components/elements/button/button-fill-dark";
-import ButtonFillWhite from "@/components/elements/button/button-fill-white";
 import Logo from "@/components/elements/icons/logo";
+import useNavbar from "@/hooks/navbar/useNavbar";
 import useSidebar from "@/hooks/sidebar/useSidebar";
+import fetcher from "@/lib/fetcher";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import { HiOutlineMenuAlt1, HiX } from "react-icons/hi";
 import Container from "../container";
 import Sidebar from "../sidebar";
-
-const Menu = [
-  { label: "Home", path: "/" },
-  { label: "Tours", path: "/tours" },
-  { label: "Services", path: "/services" },
-  { label: "About Us", path: "/about-us" },
-];
+import useSWR from "swr";
 
 const Navbar = () => {
-  const { pathname } = useRouter();
   const { setActive, active } = useSidebar();
+  const { menu } = useNavbar();
+  const { data: contact } = useSWR("/api/contact", fetcher);
 
   return (
     <>
@@ -33,7 +28,7 @@ const Navbar = () => {
               <Logo className={`text-black`} />
             </Link>
             <div className="h-full items-center md:gap-x-8 lg:gap-x-10 hidden md:flex lg:justify-center lg:order-2 md:col-span-2">
-              {Menu?.map(({ label, path }) => (
+              {menu?.map(({ label, path }) => (
                 <Link
                   key={`navbar-${path}`}
                   href={path}
@@ -43,13 +38,16 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
-            <Link
-              target="_blank"
-              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP}`}
-              className="flex justify-end order-3 lg:order-2 col-span-2 md:col-span-1"
-            >
-              <ButtonFillDark title="Book Now" size="sm" />
-            </Link>
+            {contact && (
+              <Link
+                target="_blank"
+                href={`https://wa.me/${contact?.phone}`}
+                className="flex justify-end order-3 lg:order-2 col-span-2 md:col-span-1"
+              >
+                <ButtonFillDark title="Book Now" size="sm" />
+              </Link>
+            )}
+
             <div className="md:hidden lg:ml-auto order-1">
               {active ? (
                 <HiX onClick={() => setActive(false)} size={26} />
@@ -64,7 +62,7 @@ const Navbar = () => {
           </div>
         </Container>
       </nav>
-      <Sidebar active={active} data={Menu} />
+      <Sidebar active={active} data={menu} />
     </>
   );
 };

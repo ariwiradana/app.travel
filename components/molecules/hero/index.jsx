@@ -8,8 +8,6 @@ import Image from "next/image";
 const Hero = () => {
   const { data: thumbnails, isLoading } = useSWR("/api/thumbnail", fetcher);
 
-  console.log({ thumbnails });
-
   if (isLoading)
     return (
       <div className="lg:h-[50vh] md:h-[40vh] h-[36vh] w-full bg-gray-200 animate-pulse"></div>
@@ -27,7 +25,6 @@ const Hero = () => {
         }}
       >
         {thumbnails?.map((thumbnail) => {
-          console.log(thumbnail);
           return (
             <SwiperSlide key={`thumbnail-${thumbnail?._id}`}>
               <div className="relative lg:h-[50vh] md:h-[40vh] h-[36vh] flex items-center justify-center">
