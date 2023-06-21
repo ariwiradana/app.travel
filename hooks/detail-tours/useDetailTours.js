@@ -13,10 +13,12 @@ const useDetailTours = (slug) => {
 
   useEffect(() => {
     if (data?.images) {
-      if (screen?.mobile) {
-        setPreviewImages(data?.images?.slice(0, 3));
-      } else {
-        setPreviewImages(data?.images?.slice(0, 4));
+      if (data?.images?.length > 4) {
+        if (screen?.mobile) {
+          setPreviewImages(data?.images?.slice(0, 3));
+        } else {
+          setPreviewImages(data?.images?.slice(0, 4));
+        }
       }
       setAllImages(data?.images);
     }

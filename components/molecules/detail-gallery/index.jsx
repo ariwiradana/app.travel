@@ -3,7 +3,7 @@ import React from "react";
 
 const DetailGallery = ({ image, slug, last }) => {
   return (
-    <div className="w-full h-28 md:h-40 bg-cover relative">
+    <div className="w-full h-28 md:h-44 xl:h-48 aspect-square bg-cover relative">
       <Image
         fill
         src={image}
