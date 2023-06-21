@@ -3,25 +3,28 @@ import Container from "@/components/molecules/container";
 import { priceFormatterUSD } from "@/lib/formatter";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FiCheck } from "react-icons/fi";
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import Head from "next/head";
+import HeroDetail from "@/components/molecules/hero";
+import DetailGallery from "@/components/molecules/detail-gallery";
+import useDetailTours from "@/hooks/detail-tours/useDetailTours";
 
 const DetailTour = ({ slug }) => {
-  const { data, isLoading } = useSWR(`/api/destination/${slug}`, fetcher);
   const { data: other } = useSWR(`/api/destination`, fetcher);
   const { data: contact } = useSWR("/api/contact", fetcher);
+  const { previewImages, data, isLoading, allImages } = useDetailTours(slug);
 
   return (
     <>
       <Head>
         <title>{data?.title}</title>
       </Head>
-      <div className="w-full h-[16rem] md:h-[28rem] relative">
+      <div className="w-full lg:h-[50vh] md:h-[40vh] h-[36vh] relative">
         {isLoading ? (
           <div className="w-full h-full bg-gray-200 animate-pulse"></div>
         ) : (
@@ -36,19 +39,52 @@ const DetailTour = ({ slug }) => {
           </>
         )}
       </div>
+
       <Container className="relative z-[2] ">
         <div>
           <div className="md:-mt-[8rem] bg-white py-6 md:p-10 rounded-2xl lg:max-w-[70%]">
-            <h5 className="text-xs font-medium text-gray-500 uppercase mb-3">
+            <h5 className="text-sm font-medium text-gray-500 uppercase mb-3">
               Tour Package
             </h5>
-            <h3 className="lg:text-4xl text-3xl font-raleway font-bold text-black mb-6 max-w-[90%]">
+            <h3 className="lg:text-4xl text-3xl font-raleway font-bold leading-8 lg:leading-[42px] text-black mb-4 lg:mb-8 lg:max-w-[90%]">
               {data?.title}
             </h3>
-            <p className="text-sm font-raleway font-medium text-app-black-500 mb-12 leading-7">
-              {data?.description}
-            </p>
-            <div className="flex flex-col flex-wrap gap-x-12 gap-y-6 lg:gap-y-8 divide-y divide-gray-200">
+            <div
+              className="text-base font-raleway text-justify font-medium text-app-black-500 mb-8 leading-6 lg:leading-8"
+              dangerouslySetInnerHTML={{
+                __html: data?.description,
+              }}
+            ></div>
+            <div className="flex flex-col flex-wrap gap-x-12 gap-y-6 lg:gap-y-8 divide-y divide-gray-200 border-t border-t-gray-200">
+              {data?.images && (
+                <div className="pt-8 pb-4">
+                  <h4 className="font-raleway font-semibold text-2xl mb-3 lg:mb-4">
+                    Experiences
+                  </h4>
+                  {previewImages?.length != 0 ? (
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-1 rounded-lg overflow-hidden">
+                      {previewImages?.map((image, index) => (
+                        <DetailGallery
+                          key={`preview-${image}`}
+                          slug={data?.slug}
+                          image={image}
+                          last={index == previewImages?.length - 1}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-3 md:grid-cols-4 rounded-lg overflow-hidden">
+                      {allImages?.map((image) => (
+                        <DetailGallery
+                          key={`all-${image}`}
+                          slug={data?.slug}
+                          image={image}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
               <Offer title="Where to go?" data={data?.destination} />
               <Offer title="What's included?" data={data?.inclution} />
               <Offer title="Pax" data={[`Minimum ${data?.minimum_pax} pax`]} />
@@ -90,7 +126,10 @@ const Offer = ({ title, data }) => {
       </h4>
       <ul>
         {data?.map((label) => (
-          <li key={`${title}-${label}`} className="text-base font-raleway font-medium text-app-black-500 leading-9 flex items-center gap-x-4">
+          <li
+            key={`${title}-${label}`}
+            className="text-base font-raleway font-medium text-app-black-500 leading-9 flex items-center gap-x-4"
+          >
             <FiCheck />
             {label}
           </li>
@@ -118,7 +157,10 @@ const OtherTours = ({ data, slug }) => {
         modules={[Autoplay]}
       >
         {newData?.map((destination) => (
-          <SwiperSlide className="group max-w-[80%] lg:max-w-[45%] group transition-all ease-in-out duration-500">
+          <SwiperSlide
+            key={destination?.slug}
+            className="group max-w-[80%] lg:max-w-[45%] group transition-all ease-in-out duration-500"
+          >
             <Link href={`/tours/${destination?.slug}`}>
               <div className="md:h-[16rem] h-[12rem] lg:h-[20rem] w-full relative rounded-xl bg-cover overflow-hidden">
                 <Image

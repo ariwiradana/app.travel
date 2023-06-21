@@ -5,7 +5,14 @@ import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import Image from "next/image";
 
-const HeroDetail = ({ slug, images }) => {
+const Hero = () => {
+  const { data: thumbnails, isLoading } = useSWR("/api/thumbnail", fetcher);
+
+  if (isLoading)
+    return (
+      <div className="lg:h-[50vh] md:h-[40vh] h-[36vh] w-full bg-gray-200 animate-pulse"></div>
+    );
+
   return (
     <section>
       <Swiper
@@ -17,12 +24,12 @@ const HeroDetail = ({ slug, images }) => {
           disableOnInteraction: false,
         }}
       >
-        {images?.map((image) => {
+        {thumbnails?.map((thumbnail) => {
           return (
-            <SwiperSlide key={`img-detail-${slug}`}>
+            <SwiperSlide key={`thumbnail-${thumbnail?._id}`}>
               <div className="relative lg:h-[50vh] md:h-[40vh] h-[36vh] flex items-center justify-center">
                 <Image
-                  src={image}
+                  src={thumbnail?.image_url}
                   fill
                   className="object-cover object-center"
                 />
@@ -36,4 +43,4 @@ const HeroDetail = ({ slug, images }) => {
   );
 };
 
-export default HeroDetail;
+export default Hero;
