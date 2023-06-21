@@ -11,7 +11,7 @@ const Footer = ({ menu }) => {
           <Logo className="transform lg:scale-110" />
           <ul className="flex md:flex-row flex-col md:items-center gap-4 lg:gap-10 mt-8">
             {menu?.map(({ label, path }) => (
-              <li className="text-sm font-semibold font-montserrat text-gray-600">
+              <li key={`footer-${path}`} className="text-sm font-semibold font-montserrat text-gray-600">
                 <Link href={path}>{label}</Link>
               </li>
             ))}
@@ -21,20 +21,6 @@ const Footer = ({ menu }) => {
           <p className="font-raleway text-sm text-gray-500 font-medium">
             © 2022 Karens Tour. All rights reserved.
           </p>
-          <div className="flex gap-x-5">
-            <Link
-              href="/"
-              className="font-raleway text-sm text-gray-500 font-semibold"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/"
-              className="font-raleway text-sm text-gray-500 font-semibold"
-            >
-              Privacy
-            </Link>
-          </div>
         </div>
       </Container>
     </>

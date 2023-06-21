@@ -90,7 +90,7 @@ const Offer = ({ title, data }) => {
       </h4>
       <ul>
         {data?.map((label) => (
-          <li className="text-base font-raleway font-medium text-app-black-500 leading-9 flex items-center gap-x-4">
+          <li key={`${title}-${label}`} className="text-base font-raleway font-medium text-app-black-500 leading-9 flex items-center gap-x-4">
             <FiCheck />
             {label}
           </li>

@@ -9,6 +9,7 @@ const CardGrid = ({ data, type, isLoading }) => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 md:gap-x-10 lg:gap-x-[50px] gap-y-12">
       {data?.map((destination) => (
         <Card
+          key={`${destination?.title}-${destination?.slug}`}
           type={type}
           title={destination?.title}
           id={destination?._id}
