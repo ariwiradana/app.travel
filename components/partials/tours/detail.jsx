@@ -83,7 +83,11 @@ const DetailTour = ({ slug }) => {
                         <div className="grid grid-cols-3 md:grid-cols-4 gap-1 rounded-lg overflow-hidden">
                           {previewImages?.map((image, index) => (
                             <DetailGallery
-                              onClick={onOpenModal}
+                              onClick={() => {
+                                if (index == previewImages?.length - 1) {
+                                  onOpenModal();
+                                }
+                              }}
                               key={`preview-${image}`}
                               slug={data?.slug}
                               image={image}
