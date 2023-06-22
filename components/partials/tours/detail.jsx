@@ -3,7 +3,7 @@ import Container from "@/components/molecules/container";
 import { priceFormatterUSD } from "@/lib/formatter";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FiCheck } from "react-icons/fi";
@@ -25,7 +25,6 @@ const DetailTour = ({ slug }) => {
   const { previewImages, data, isLoading, allImages } = useDetailTours(slug);
   const { onOpenModal, onCloseModal, isOpen } = useModal();
   const { isOpenLightbox, onToggleLightbox, slide } = useLightbox();
-
   return (
     <>
       <Head>
