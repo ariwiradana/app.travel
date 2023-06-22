@@ -32,12 +32,7 @@ const CustomModal = ({ open, onClose, onOpen, children, title }) => {
           onOpen={onOpen}
         >
           <div className="max-h-[600px] px-4 py-6">
-            {title && (
-              <h4 className="font-raleway font-semibold text-2xl mb-3 lg:mb-4 fixed top-32 p-4 left-0 right-0 overflow-hidden z-[999] bg-white w-full transition-all ease-in-out rounded-t-xl">
-                {title}
-              </h4>
-            )}
-            <div className="-mt-4">{children}</div>
+            <div className="pb-8">{children}</div>
           </div>
         </SwipeableDrawer>
       )}
