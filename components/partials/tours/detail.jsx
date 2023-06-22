@@ -16,12 +16,15 @@ import CustomModal from "@/components/elements/modal";
 import useModal from "@/hooks/modal/useModal";
 import ModalGalleryContent from "@/components/molecules/modal-gallery";
 import Loader from "@/components/elements/loader";
+import LightBoxGallery from "@/components/molecules/lightbox-gallery";
+import useLightbox from "@/hooks/lightbox/useLightbox";
 
 const DetailTour = ({ slug }) => {
   const { data: other } = useSWR(`/api/destination`, fetcher);
   const { data: contact } = useSWR("/api/contact", fetcher);
   const { previewImages, data, isLoading, allImages } = useDetailTours(slug);
   const { onOpenModal, onCloseModal, isOpen } = useModal();
+  const { isOpenLightbox, onToggleLightbox, slide } = useLightbox();
 
   return (
     <>
@@ -34,8 +37,16 @@ const DetailTour = ({ slug }) => {
         onOpen={onOpenModal}
         title="Experiences"
       >
-        <ModalGalleryContent images={allImages} />
+        <ModalGalleryContent
+          images={allImages}
+          onToggleLightbox={onToggleLightbox}
+        />
       </CustomModal>
+      <LightBoxGallery
+        open={isOpenLightbox}
+        slide={slide}
+        sources={allImages}
+      />
       <div className="w-full lg:h-[50vh] md:h-[40vh] h-[36vh] relative">
         {isLoading ? (
           <div className="w-full h-full bg-gray-200 animate-pulse"></div>
@@ -56,7 +67,7 @@ const DetailTour = ({ slug }) => {
         <div>
           <div className="md:-mt-[8rem] bg-white py-6 md:p-10 rounded-2xl lg:max-w-[70%]">
             {isLoading ? (
-              <div className="min-h-[70vh] md:min-h-0">
+              <div className="min-h-[70vh] md:min-h-[40vh] flex md:items-center">
                 <Loader />
               </div>
             ) : (
@@ -86,6 +97,8 @@ const DetailTour = ({ slug }) => {
                               onClick={() => {
                                 if (index == previewImages?.length - 1) {
                                   onOpenModal();
+                                } else {
+                                  onToggleLightbox(index + 1);
                                 }
                               }}
                               key={`preview-${image}`}
@@ -97,9 +110,9 @@ const DetailTour = ({ slug }) => {
                         </div>
                       ) : (
                         <div className="grid grid-cols-3 md:grid-cols-4 gap-1 rounded-lg overflow-hidden">
-                          {allImages?.map((image) => (
+                          {allImages?.map((image, index) => (
                             <DetailGallery
-                              onClick={onOpenModal}
+                              onClick={onToggleLightbox(index + 1)}
                               key={`all-${image}`}
                               slug={data?.slug}
                               image={image}
@@ -138,7 +151,7 @@ const DetailTour = ({ slug }) => {
               </>
             )}
           </div>
-          <OtherTours data={other} slug={slug} />
+          {!isLoading && <OtherTours data={other} slug={slug} />}
         </div>
       </Container>
     </>

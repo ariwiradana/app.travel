@@ -4,7 +4,7 @@ const ButtonFillDark = ({ title, icon, size, full, ...props }) => {
   return (
     <button
       {...props}
-      className={`bg-black hover:bg-opacity-90 duration-300 text-white hover:text-white rounded-full group md:text-sm font-semibold font-montserrat transition-colors ease-in-out lg:px-6 lg:py-3 md:px-4 md:py-2 px-3 py-[6px] ${
+      className={`bg-black hover:bg-opacity-90 duration-300 text-white hover:text-white rounded-full group md:text-sm font-semibold font-montserrat transition-colors ease-in-out lg:px-6 lg:py-3 md:px-4 md:py-2 px-3 py-[10px] ${
         full ? "w-full py-4 text-sm" : "w-auto text-xs md:text-sm"
       }`}
     >

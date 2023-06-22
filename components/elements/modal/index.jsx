@@ -31,9 +31,7 @@ const CustomModal = ({ open, onClose, onOpen, children, title }) => {
           onClose={onClose}
           onOpen={onOpen}
         >
-          <div className="max-h-[500px] px-4 py-6">
-            <div className="pb-8">{children}</div>
-          </div>
+          <div className="p-1">{children}</div>
         </SwipeableDrawer>
       )}
     </>
