@@ -3,27 +3,39 @@ import Container from "@/components/molecules/container";
 import { priceFormatterUSD } from "@/lib/formatter";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FiCheck } from "react-icons/fi";
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import Head from "next/head";
-import HeroDetail from "@/components/molecules/hero";
 import DetailGallery from "@/components/molecules/detail-gallery";
 import useDetailTours from "@/hooks/detail-tours/useDetailTours";
+import CustomModal from "@/components/elements/modal";
+import useModal from "@/hooks/modal/useModal";
+import ModalGalleryContent from "@/components/molecules/modal-gallery";
+import Loader from "@/components/elements/loader";
 
 const DetailTour = ({ slug }) => {
   const { data: other } = useSWR(`/api/destination`, fetcher);
   const { data: contact } = useSWR("/api/contact", fetcher);
   const { previewImages, data, isLoading, allImages } = useDetailTours(slug);
+  const { onOpenModal, onCloseModal, isOpen } = useModal();
 
   return (
     <>
       <Head>
         <title>{data?.title}</title>
       </Head>
+      <CustomModal
+        open={isOpen}
+        onClose={onCloseModal}
+        onOpen={onOpenModal}
+        title="Experiences"
+      >
+        <ModalGalleryContent images={allImages} />
+      </CustomModal>
       <div className="w-full lg:h-[50vh] md:h-[40vh] h-[36vh] relative">
         {isLoading ? (
           <div className="w-full h-full bg-gray-200 animate-pulse"></div>
@@ -43,71 +55,84 @@ const DetailTour = ({ slug }) => {
       <Container className="relative z-[2] ">
         <div>
           <div className="md:-mt-[8rem] bg-white py-6 md:p-10 rounded-2xl lg:max-w-[70%]">
-            <h5 className="text-sm font-medium text-gray-500 uppercase mb-3">
-              Tour Package
-            </h5>
-            <h3 className="lg:text-4xl text-3xl font-raleway font-bold leading-8 lg:leading-[42px] text-black mb-4 lg:mb-8 lg:max-w-[90%]">
-              {data?.title}
-            </h3>
-            <div
-              className="text-base font-raleway text-justify font-medium text-app-black-500 mb-8 leading-6 lg:leading-8"
-              dangerouslySetInnerHTML={{
-                __html: data?.description,
-              }}
-            ></div>
-            <div className="flex flex-col flex-wrap gap-x-12 gap-y-6 lg:gap-y-8 divide-y divide-gray-200 border-t border-t-gray-200">
-              {data?.images && (
-                <div className="pt-8 pb-4">
-                  <h4 className="font-raleway font-semibold text-2xl mb-3 lg:mb-4">
-                    Experiences
-                  </h4>
-                  {previewImages?.length != 0 ? (
-                    <div className="grid grid-cols-3 md:grid-cols-4 gap-1 rounded-lg overflow-hidden">
-                      {previewImages?.map((image, index) => (
-                        <DetailGallery
-                          key={`preview-${image}`}
-                          slug={data?.slug}
-                          image={image}
-                          last={index == previewImages?.length - 1}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-3 md:grid-cols-4 gap-1 rounded-lg overflow-hidden">
-                      {allImages?.map((image) => (
-                        <DetailGallery
-                          key={`all-${image}`}
-                          slug={data?.slug}
-                          image={image}
-                        />
-                      ))}
+            {isLoading ? (
+              <div className="min-h-[70vh] md:min-h-0">
+                <Loader />
+              </div>
+            ) : (
+              <>
+                <h5 className="text-sm font-medium text-gray-500 uppercase mb-3">
+                  Tour Package
+                </h5>
+                <h3 className="lg:text-4xl text-3xl font-raleway font-bold leading-8 lg:leading-[42px] text-black mb-4 lg:mb-8 lg:max-w-[90%]">
+                  {data?.title}
+                </h3>
+                <div
+                  className="text-base font-raleway text-justify font-medium text-app-black-500 mb-8 leading-6 lg:leading-8"
+                  dangerouslySetInnerHTML={{
+                    __html: data?.description,
+                  }}
+                ></div>
+                <div className="flex flex-col flex-wrap gap-x-12 gap-y-6 lg:gap-y-8 divide-y divide-gray-200 border-t border-t-gray-200">
+                  {data?.images && (
+                    <div className="pt-8 pb-4">
+                      <h4 className="font-raleway font-semibold text-2xl mb-3 lg:mb-4">
+                        Experiences
+                      </h4>
+                      {previewImages?.length != 0 ? (
+                        <div className="grid grid-cols-3 md:grid-cols-4 gap-1 rounded-lg overflow-hidden">
+                          {previewImages?.map((image, index) => (
+                            <DetailGallery
+                              onClick={onOpenModal}
+                              key={`preview-${image}`}
+                              slug={data?.slug}
+                              image={image}
+                              last={index == previewImages?.length - 1}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-3 md:grid-cols-4 gap-1 rounded-lg overflow-hidden">
+                          {allImages?.map((image) => (
+                            <DetailGallery
+                              onClick={onOpenModal}
+                              key={`all-${image}`}
+                              slug={data?.slug}
+                              image={image}
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
+                  <Offer title="Where to go?" data={data?.destination} />
+                  <Offer title="What's included?" data={data?.inclution} />
+                  <Offer
+                    title="Pax"
+                    data={[`Minimum ${data?.minimum_pax} pax`]}
+                  />
                 </div>
-              )}
-              <Offer title="Where to go?" data={data?.destination} />
-              <Offer title="What's included?" data={data?.inclution} />
-              <Offer title="Pax" data={[`Minimum ${data?.minimum_pax} pax`]} />
-            </div>
-            <div className="flex md:flex-row gap-y-4 flex-col items-start justify-between mt-8 border-t border-t-gray-200 pt-6">
-              <div className="flex gap-x-2 items-end">
-                <h2 className="lg:text-4xl text-3xl font-bold font-raleway">
-                  {priceFormatterUSD(data?.price)}
-                </h2>
-                <p className="text-sm font-montserrat text-app-black-500">
-                  / pax{" "}
-                </p>
-              </div>
-              {contact && (
-                <Link
-                  target="_blank"
-                  href={`https://wa.me/${contact?.phone}`}
-                  className="w-full md:w-auto"
-                >
-                  <ButtonFillDark size="lg" title="Book Now" full />
-                </Link>
-              )}
-            </div>
+                <div className="flex md:flex-row gap-y-4 flex-col items-start justify-between mt-8 border-t border-t-gray-200 pt-6">
+                  <div className="flex gap-x-2 items-end">
+                    <h2 className="lg:text-4xl text-3xl font-bold font-raleway">
+                      {priceFormatterUSD(data?.price)}
+                    </h2>
+                    <p className="text-sm font-montserrat text-app-black-500">
+                      / pax{" "}
+                    </p>
+                  </div>
+                  {contact && (
+                    <Link
+                      target="_blank"
+                      href={`https://wa.me/${contact?.phone}`}
+                      className="w-full md:w-auto"
+                    >
+                      <ButtonFillDark size="lg" title="Book Now" full />
+                    </Link>
+                  )}
+                </div>
+              </>
+            )}
           </div>
           <OtherTours data={other} slug={slug} />
         </div>

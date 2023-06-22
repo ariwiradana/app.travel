@@ -1,9 +1,12 @@
 import Image from "next/image";
 import React from "react";
 
-const DetailGallery = ({ image, slug, last }) => {
+const DetailGallery = ({ image, slug, last , onClick}) => {
   return (
-    <div className="w-full h-28 md:h-44 xl:h-48 aspect-square bg-cover relative">
+    <div
+      onClick={onClick}
+      className="w-full h-28 md:h-44 xl:h-48 aspect-square bg-cover relative cursor-pointer"
+    >
       <Image
         fill
         src={image}
