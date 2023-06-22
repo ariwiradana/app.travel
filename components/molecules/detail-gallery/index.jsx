@@ -8,6 +8,7 @@ const DetailGallery = ({ image, slug, last , onClick}) => {
       className="w-full h-28 md:h-44 xl:h-48 aspect-square bg-cover relative cursor-pointer"
     >
       <Image
+        quality={50}
         fill
         src={image}
         alt={slug}

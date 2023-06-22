@@ -11,6 +11,7 @@ const ModalGalleryContent = ({ images, onToggleLightbox }) => {
           className="w-full h-44 md:h-44 xl:h-48 aspect-square bg-cover relative cursor-pointer"
         >
           <Image
+            quality={50}
             fill
             src={image}
             alt={`alt-${image}`}
