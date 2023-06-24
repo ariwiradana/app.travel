@@ -26,7 +26,7 @@ const ReviewCard = ({ review }) => {
         size="medium"
         readOnly
       />
-      <p className="font-montserrat text-app-black-500 text-sm lg:text-base">
+      <p className="font-montserrat text-app-black-500 text-sm lg:text-base text-justify">
         {more ? fullReview : shortReview}{" "}
         <span>
           {!more && "..."}
