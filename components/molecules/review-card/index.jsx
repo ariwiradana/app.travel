@@ -26,17 +26,22 @@ const ReviewCard = ({ review }) => {
         size="medium"
         readOnly
       />
-      <p className="font-montserrat text-app-black-500 text-sm lg:text-base text-justify">
+      <p className="font-montserrat text-app-black-500 text-sm lg:text-base">
         {more ? fullReview : shortReview}{" "}
-        <span>
-          {!more && "..."}
-          <span
-            className="font-montserrat font-semibold cursor-pointer"
-            onClick={() => setMore(!more)}
-          >
-            {more ? " Less" : " More"}
+        {fullReview?.split(" ").length > 30 && (
+          <span>
+            {!more && "..."}
+            {!more && (
+              <span
+                className="font-montserrat font-semibold cursor-pointer"
+                onClick={() => setMore(true)}
+              >
+                {" "}
+                More
+              </span>
+            )}
           </span>
-        </span>
+        )}
       </p>
     </div>
   );
