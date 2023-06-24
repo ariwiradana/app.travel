@@ -1,9 +1,9 @@
 import CardSlider from "@/components/molecules/card-slider";
 import Hero from "@/components/molecules/hero";
 import React from "react";
-import popular from "@/json/home/popular.json";
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
+import ReviewSection from "@/components/molecules/review-section";
 
 const HomeComponent = () => {
   const { data: tours, isLoading: isLoadingTours } = useSWR(
@@ -21,7 +21,7 @@ const HomeComponent = () => {
       <div className="flex flex-col gap-y-12 lg:gap-y-20 py-10 lg:py-20">
         <CardSlider
           isLoading={isLoadingTours}
-          actionTitle="More Tours"
+          actionTitle="All Tours"
           href="/tours"
           data={tours}
           title="Tour Packages"
@@ -29,7 +29,7 @@ const HomeComponent = () => {
           type="tours"
         />
         <CardSlider
-          actionTitle="More Services"
+          actionTitle="All Services"
           href="/services"
           isLoading={isLoadingServices}
           data={services}
@@ -37,6 +37,7 @@ const HomeComponent = () => {
           subtitle="Airport Pickup / Drop Off / Tour"
           type="services"
         />
+        <ReviewSection />
       </div>
     </>
   );
